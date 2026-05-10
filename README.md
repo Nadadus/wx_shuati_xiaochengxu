@@ -189,3 +189,18 @@ pages/
 ├─ recycleBin/        题库回收站
 ├─ recordManage/      学习记录管理
 └─ studySettings/     学习设置
+utils/
+├─ importValidator.js        题库 JSON 解析与格式校验
+├─ localBankStore.js         本地题库包存储
+├─ questionStore.js          题目读取、合并、排序
+├─ recordStore.js            答题、错题、收藏、备注、进度、回收站记录管理
+├─ subjectStore.js           科目配置管理
+├─ study.js                  学习天数、签到、首页统计
+├─ quizProgress.js           练习进度辅助逻辑
+└─ bankPackageExportStore.js 题库打包导出逻辑
+data/
+├─ bankPackageTemplate.js    JSON 题库模板与 AI 生成规范
+├─ chapters.js               示例章节配置
+├─ importedQuestions.js      外部导入题目占位
+├─ questionBanks.js          示例题库信息
+└─ questions.js              示例题目或空题库
