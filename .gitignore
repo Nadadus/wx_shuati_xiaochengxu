@@ -3,8 +3,18 @@ project.private.config.json
 .project.private.config.json
 project.config.local.json
 
-# 如果 project.config.json 中有真实 appid，也不要上传
+# 真实 project.config.json 不上传，使用 project.config.example.json 代替
 project.config.json
+
+# 当前开源版暂不包含云函数
+cloudfunctions/
+uploadCloudFunction.sh
+
+# 当前开源版暂不包含 WebDAV 功能代码
+miniprogram/pages/webdavSettings/
+miniprogram/utils/webdavClient.js
+miniprogram/utils/webdavStore.js
+miniprogram/utils/webdavBackupService.js
 
 # 依赖
 node_modules/
@@ -25,7 +35,7 @@ Thumbs.db
 .env.local
 .env.*.local
 
-# 私有资料
+# 私有资料与真实题库
 private/
 pdfs/
 real-question-banks/
@@ -34,7 +44,7 @@ real-question-banks/
 题库原始PDF/
 题库导出/
 
-# 常见资料格式，避免误传
+# 避免误传资料文件
 *.pdf
 *.doc
 *.docx
