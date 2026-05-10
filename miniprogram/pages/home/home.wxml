@@ -1,0 +1,80 @@
+<view class="container">
+  <view class="header">
+    <view class="title">通信刷题助手</view>
+    <view class="muted">自用题库 · 顺序练习 · 错题复盘 · 收藏题目</view>
+  </view>
+
+  <view class="card main-stat-card">
+    <view class="stat-row">
+      <view class="stat-item">
+        <view class="stat-number">{{summary.countdownDays}}</view>
+        <view class="stat-label">剩余天数</view>
+      </view>
+
+      <view class="stat-item">
+        <view class="stat-number">{{summary.learningDays}}</view>
+        <view class="stat-label">学习天数</view>
+      </view>
+
+      <view class="stat-item">
+        <view class="checkin-btn {{summary.todayChecked ? 'checked' : ''}}" bindtap="onCheckin">
+          {{summary.todayChecked ? '已签到' : '签到'}}
+        </view>
+        <view class="stat-label">今日打卡</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="card answer-stat-card">
+    <view class="answer-stat-title">练习统计</view>
+
+    <view class="stat-row answer-stat-row">
+      <view class="stat-item">
+        <view class="answer-number">{{summary.todayAnswered}}</view>
+        <view class="answer-label">今日做题</view>
+      </view>
+
+      <view class="stat-item">
+        <view class="answer-number">{{summary.totalAnswered}}</view>
+        <view class="answer-label">累计做题</view>
+      </view>
+
+      <view class="stat-item">
+        <view class="answer-number">{{summary.accuracyRate}}%</view>
+        <view class="answer-label">累计正确率</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="card function-card" bindtap="goSequence">
+    <view>
+      <view class="function-title">顺序练习</view>
+      <view class="muted">按考试大纲顺序练习题库</view>
+    </view>
+    <view class="arrow">›</view>
+  </view>
+
+  <view class="card function-card" bindtap="goWrong">
+    <view>
+      <view class="function-title">错题练习</view>
+      <view class="muted">手动移出错题，集中复盘薄弱题目</view>
+    </view>
+    <view class="arrow">›</view>
+  </view>
+
+  <view class="card function-card" bindtap="goFavorite">
+    <view>
+      <view class="function-title">收藏题目</view>
+      <view class="muted">查看手动收藏的重点题目</view>
+    </view>
+    <view class="arrow">›</view>
+  </view>
+
+  <view class="card function-card" bindtap="goMine">
+    <view>
+      <view class="function-title">我的</view>
+      <view class="muted">学习设置、题库管理、学习记录管理</view>
+    </view>
+    <view class="arrow">›</view>
+  </view>
+</view>

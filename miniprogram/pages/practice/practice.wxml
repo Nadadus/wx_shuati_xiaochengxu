@@ -1,0 +1,192 @@
+<view class="container">
+  <view wx:if="{{empty}}" class="card empty-card">
+    <view class="sub-title">暂无题目</view>
+    <view class="muted">{{emptyText}}</view>
+  </view>
+
+  <view wx:else>
+    <view wx:if="{{recycleView}}" class="recycle-banner">
+      本题已在题库回收站中，当前仅用于查看，不计入学习进度。
+    </view>
+
+    <view class="practice-card">
+      <view class="top-row">
+        <view class="type-tag">{{typeText}}</view>
+
+        <view class="question-index">{{currentIndex + 1}} / {{queue.length}}</view>
+
+        <view class="top-tools">
+          <view class="tool-btn card-tool" bindtap="openAnswerCard">
+            <view class="answer-card-icon">
+              <view class="answer-card-line"></view>
+              <view class="answer-card-line short"></view>
+              <view class="answer-card-line"></view>
+            </view>
+          </view>
+
+          <view class="tool-btn star-tool" bindtap="onToggleFavorite">
+            <view class="star-symbol {{isFavorite ? 'star-on' : 'star-off'}}">
+              {{isFavorite ? '★' : '☆'}}
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <view class="meta-row">
+        <text>{{question.subjectName}}</text>
+        <text class="dot">·</text>
+        <text>{{question.chapterName}}</text>
+      </view>
+
+      <view class="question-title">
+        {{question.question}}
+      </view>
+
+      <view
+        wx:for="{{displayOptions}}"
+        wx:key="key"
+        class="option-item {{item.selected ? 'option-selected' : ''}} {{item.correct ? 'option-correct' : ''}} {{item.wrong ? 'option-wrong' : ''}}"
+        data-key="{{item.key}}"
+        bindtap="onSelectOption"
+      >
+        <view class="option-key">{{item.key}}</view>
+        <view class="option-text">{{item.text}}</view>
+      </view>
+
+      <view class="nav-row">
+        <button class="nav-btn gray-nav" bindtap="goPrev">上一题</button>
+
+        <button
+          wx:if="{{recycleView}}"
+          class="nav-btn submitted-nav"
+        >
+          回收站查看
+        </button>
+
+        <button
+          wx:elif="{{!submitted}}"
+          class="nav-btn submit-nav"
+          bindtap="onSubmit"
+        >
+          立即提交
+        </button>
+
+        <button
+          wx:else
+          class="nav-btn submitted-nav"
+        >
+          已提交
+        </button>
+
+        <button class="nav-btn gray-nav" bindtap="goNext">下一题</button>
+      </view>
+    </view>
+
+    <view wx:if="{{submitted}}" class="card result-card">
+      <view class="{{result.isCorrect ? 'result-correct' : 'result-wrong'}}">
+        {{result.isCorrect ? '回答正确' : '回答错误'}}
+      </view>
+
+      <view class="result-line">本次选择：{{result.userAnswerText}}</view>
+      <view class="result-line">正确答案：{{result.correctAnswerText}}</view>
+      <view wx:if="{{result.previousAnswerText !== '未选择'}}" class="result-line">
+        上次选择：{{result.previousAnswerText}}
+      </view>
+
+      <view class="analysis-block">
+        <view class="sub-title">解析</view>
+        <view class="analysis-text">{{question.analysis || '暂无解析'}}</view>
+      </view>
+
+      <view class="note-block">
+        <view class="note-head">
+          <view class="sub-title note-title">我的备注</view>
+
+          <button
+            class="note-save-inline {{noteSaved ? 'note-save-done' : 'note-save-active'}}"
+            bindtap="onSaveNote"
+          >
+            {{noteSaveText}}
+          </button>
+        </view>
+
+        <textarea
+          class="note-input"
+          value="{{noteInput}}"
+          placeholder="可以记录本题易错点、公式、自己的理解"
+          bindinput="onNoteInput"
+        ></textarea>
+
+        <view wx:if="{{canRemoveWrong}}" class="wrong-remove-area">
+          <button class="remove-wrong-btn" bindtap="onRemoveWrong">
+            移出错题
+          </button>
+        </view>
+
+        <view wx:if="{{!recycleView}}" class="delete-area">
+          <button class="delete-question-btn" bindtap="onDeleteQuestion">
+            删除本题
+          </button>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view wx:if="{{showAnswerCard}}" class="card-mask" bindtap="closeAnswerCard">
+    <view class="card-panel" catchtap="noop">
+      <view class="card-panel-head">
+        <view class="card-panel-title">答题卡</view>
+        <view class="card-panel-close" bindtap="closeAnswerCard">关闭</view>
+      </view>
+
+      <view class="card-legend">
+        <view class="legend-item">
+          <view class="legend-dot legend-current"></view>
+          <text>当前</text>
+        </view>
+        <view class="legend-item">
+          <view class="legend-dot legend-right"></view>
+          <text>正确</text>
+        </view>
+        <view class="legend-item">
+          <view class="legend-dot legend-wrong"></view>
+          <text>错误</text>
+        </view>
+        <view class="legend-item">
+          <view class="legend-dot legend-unanswered"></view>
+          <text>未做</text>
+        </view>
+      </view>
+
+      <view class="card-filter-row">
+        <view
+          wx:for="{{answerCardFilterList}}"
+          wx:key="value"
+          class="card-filter-item {{answerCardFilter === item.value ? 'card-filter-active' : ''}}"
+          data-filter="{{item.value}}"
+          bindtap="setAnswerCardFilter"
+        >
+          {{item.label}}
+        </view>
+      </view>
+
+      <view wx:if="{{answerCardList.length === 0}}" class="card-filter-empty">
+        当前筛选下暂无题目
+      </view>
+
+      <view wx:else class="card-grid">
+        <view
+          wx:for="{{answerCardList}}"
+          wx:key="questionId"
+          class="card-grid-item {{item.statusClass}}"
+          data-index="{{item.index}}"
+          bindtap="jumpToQuestion"
+        >
+          {{item.number}}
+        </view>
+      </view>
+
+
+    </view>
+  </view>
+</view>

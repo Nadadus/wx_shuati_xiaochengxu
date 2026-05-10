@@ -1,0 +1,38 @@
+<view class="container">
+  <view class="card">
+    <view class="title">我的</view>
+    <view class="muted">学习设置、题库管理、学习记录管理和题库回收站。</view>
+  </view>
+
+  <view class="card function-card" bindtap="goStudySettings">
+    <view>
+      <view class="function-title">学习设置</view>
+      <view class="muted">设置考试日期，用于首页倒计时</view>
+    </view>
+    <view class="arrow">›</view>
+  </view>
+
+  <view class="card function-card" bindtap="goBankManage">
+    <view>
+      <view class="function-title">题库管理</view>
+      <view class="muted">题库导入、题库包管理、科目顺序管理</view>
+    </view>
+    <view class="arrow">›</view>
+  </view>
+
+  <view class="card function-card" bindtap="goRecordManage">
+    <view>
+      <view class="function-title">学习记录管理</view>
+      <view class="muted">清空顺序、错题、收藏的练习进度或记录</view>
+    </view>
+    <view class="arrow">›</view>
+  </view>
+
+  <view class="card function-card" bindtap="goRecycleBin">
+    <view>
+      <view class="function-title">题库回收站</view>
+      <view class="muted">查看、恢复或彻底删除已删除的题目</view>
+    </view>
+    <view class="arrow">›</view>
+  </view>
+</view>

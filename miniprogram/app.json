@@ -1,0 +1,27 @@
+{
+  "pages": [
+    "pages/home/home",
+    "pages/subjectList/subjectList",
+    "pages/practice/practice",
+    "pages/mine/mine",
+    "pages/bankManage/bankManage",
+    "pages/bankImport/bankImport",
+    "pages/subjectOrder/subjectOrder",
+    "pages/localBankList/localBankList",
+    "pages/localBankDetail/localBankDetail",
+    "pages/localBankExport/localBankExport",
+    "pages/studySettings/studySettings",
+    "pages/recycleBin/recycleBin",
+    "pages/recordManage/recordManage"
+  ],
+  "window": {
+    "backgroundColor": "#F6F6F6",
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#F6F6F6",
+    "navigationBarTitleText": "通信刷题助手",
+    "navigationBarTextStyle": "black"
+  },
+  "sitemapLocation": "sitemap.json",
+  "style": "v2",
+  "lazyCodeLoading": "requiredComponents"
+}

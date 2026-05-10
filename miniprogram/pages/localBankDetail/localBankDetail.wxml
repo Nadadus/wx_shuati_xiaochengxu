@@ -1,0 +1,206 @@
+<view class="container">
+  <view wx:if="{{empty}}" class="card empty-card">
+    <view class="sub-title">题库不存在</view>
+    <view class="muted">该题库可能已被删除，或本地题库文件读取失败。</view>
+  </view>
+
+  <view wx:else>
+    <view class="card">
+      <view class="detail-head">
+        <view>
+          <view class="title">{{bankInfo.bankName}}</view>
+          <view class="muted">题库 ID：{{bankInfo.bankId}}</view>
+        </view>
+
+        <view class="bank-tag">本地</view>
+      </view>
+
+      <view wx:if="{{bankInfo.description}}" class="description-text">
+        {{bankInfo.description}}
+      </view>
+    </view>
+
+    <view class="card">
+      <view class="sub-title">题库名称管理</view>
+
+      <view class="input-label">题库名称</view>
+      <input
+        class="rename-input"
+        value="{{renameBankName}}"
+        placeholder="请输入新的题库名称"
+        bindinput="onBankNameInput"
+      />
+
+      <button class="rename-btn" bindtap="saveBankName">
+        保存题库名称
+      </button>
+    </view>
+
+    <view class="card">
+      <view class="sub-title">题库统计</view>
+
+      <view class="stat-grid">
+        <view class="stat-item">
+          <view class="stat-number">{{summary.questionCount}}</view>
+          <view class="stat-label">题目</view>
+        </view>
+
+        <view class="stat-item">
+          <view class="stat-number">{{summary.subjectCount}}</view>
+          <view class="stat-label">科目</view>
+        </view>
+
+        <view class="stat-item">
+          <view class="stat-number">{{summary.chapterCount}}</view>
+          <view class="stat-label">章节</view>
+        </view>
+      </view>
+    </view>
+
+    <view class="card">
+      <view class="sub-title">学习记录 records</view>
+
+      <view class="record-row">
+        <view class="record-label">答题记录 answers</view>
+        <view class="record-value">{{summary.answerCount}}</view>
+      </view>
+
+      <view class="record-row">
+        <view class="record-label">错题记录 wrong</view>
+        <view class="record-value">{{summary.wrongCount}}</view>
+      </view>
+
+      <view class="record-row">
+        <view class="record-label">收藏记录 favorites</view>
+        <view class="record-value">{{summary.favoriteCount}}</view>
+      </view>
+
+      <view class="record-row">
+        <view class="record-label">备注记录 notes</view>
+        <view class="record-value">{{summary.noteCount}}</view>
+      </view>
+
+      <view class="record-row">
+        <view class="record-label">顺序练习进度 sequenceProgress</view>
+        <view class="record-value">{{summary.sequenceProgressCount}}</view>
+      </view>
+
+      <view class="record-row">
+        <view class="record-label">错题练习进度 wrongProgress</view>
+        <view class="record-value">{{summary.wrongProgressCount}}</view>
+      </view>
+
+      <view class="record-row">
+        <view class="record-label">收藏夹练习进度 favoriteProgress</view>
+        <view class="record-value">{{summary.favoriteProgressCount}}</view>
+      </view>
+
+      <view class="record-row">
+        <view class="record-label">回收站 / 删除标记 deleted</view>
+        <view class="record-value">{{summary.deletedCount}}</view>
+      </view>
+    </view>
+
+    <view class="card danger-preview-card">
+      <view class="sub-title">删除影响范围</view>
+      <view class="danger-desc">
+        删除本题库时，会同时清除该题库所属题目的答题记录、错题、收藏、备注、练习进度和回收站记录。
+      </view>
+
+      <view class="delete-impact-grid">
+        <view class="delete-impact-item">
+          <view class="impact-num">{{summary.questionCount}}</view>
+          <view class="impact-label">题目</view>
+        </view>
+
+        <view class="delete-impact-item">
+          <view class="impact-num">{{summary.answerCount}}</view>
+          <view class="impact-label">答题</view>
+        </view>
+
+        <view class="delete-impact-item">
+          <view class="impact-num">{{summary.wrongCount}}</view>
+          <view class="impact-label">错题</view>
+        </view>
+
+        <view class="delete-impact-item">
+          <view class="impact-num">{{summary.favoriteCount}}</view>
+          <view class="impact-label">收藏</view>
+        </view>
+      </view>
+    </view>
+
+    <view class="card">
+      <view class="sub-title">科目列表</view>
+
+      <view wx:if="{{subjectList.length === 0}}" class="muted">
+        该题库包中未显式提供 subjects，将从 questions 中自动识别科目。
+      </view>
+
+      <view
+        wx:for="{{subjectList}}"
+        wx:key="subjectId"
+        class="subject-row"
+      >
+        <view>
+          <view class="subject-name">{{item.subjectName}}</view>
+          <view class="muted">subjectId：{{item.subjectId}}</view>
+        </view>
+
+        <view class="subject-order">顺序 {{item.sortOrder}}</view>
+      </view>
+    </view>
+
+    <view class="card">
+      <view class="sub-title">章节详情</view>
+
+      <view wx:if="{{chapterList.length === 0}}" class="muted">
+        暂无章节信息。
+      </view>
+
+      <view
+        wx:for="{{chapterList}}"
+        wx:key="key"
+        class="chapter-row"
+      >
+        <view>
+          <view class="chapter-name">{{item.chapterName}}</view>
+          <view class="muted">
+            科目：{{item.subjectName}} · chapterId：{{item.chapterId}}
+          </view>
+        </view>
+
+        <view class="chapter-count">{{item.questionCount}} 题</view>
+      </view>
+    </view>
+
+    <view class="card">
+      <view class="sub-title">题库信息</view>
+
+      <view class="record-row">
+        <view class="record-label">sourceType</view>
+        <view class="record-value">{{bankInfo.sourceType}}</view>
+      </view>
+
+      <view class="record-row">
+        <view class="record-label">createTime</view>
+        <view class="record-value">{{bankInfo.createTime}}</view>
+      </view>
+
+      <view class="record-row">
+        <view class="record-label">updateTime</view>
+        <view class="record-value">{{bankInfo.updateTime}}</view>
+      </view>
+    </view>
+
+    <view class="card action-card">
+      <button class="copy-btn" bindtap="copyBankPackage">
+        复制题库 JSON
+      </button>
+
+      <button class="delete-btn" bindtap="deleteBankPackage">
+        删除题库
+      </button>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,17 @@
+.function-entry-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.function-title {
+  font-size: 34rpx;
+  font-weight: 700;
+  color: #1f2328;
+  margin-bottom: 8rpx;
+}
+
+.arrow {
+  font-size: 54rpx;
+  color: #b5bbc4;
+}

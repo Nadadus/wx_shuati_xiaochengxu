@@ -1,0 +1,224 @@
+<view class="container">
+  <view class="card">
+    <view class="title">WebDAV 设置</view>
+    <view class="muted">
+      WebDAV 只作为题库包备份和恢复使用。小程序刷题时优先读取本地题库，不依赖 WebDAV 在线访问。
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="setting-row">
+      <view>
+        <view class="setting-title">启用 WebDAV</view>
+        <view class="muted">开启后，允许进行手动备份、自动备份和恢复。</view>
+      </view>
+
+      <switch checked="{{config.enabled}}" color="#2f7cf6" bindchange="onEnabledChange"></switch>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="sub-title">连接配置</view>
+
+    <view class="input-label">WebDAV 地址</view>
+    <input
+      class="input-box"
+      value="{{config.serverUrl}}"
+      placeholder="例如：https://dav.example.com/dav/"
+      bindinput="onServerUrlInput"
+    />
+
+    <view class="input-label">用户名</view>
+    <input
+      class="input-box"
+      value="{{config.username}}"
+      placeholder="请输入 WebDAV 用户名"
+      bindinput="onUsernameInput"
+    />
+
+    <view class="input-label">密码 / 应用密码</view>
+    <view class="password-row">
+      <input
+        class="password-input"
+        password="{{passwordHidden}}"
+        value="{{config.password}}"
+        placeholder="请输入 WebDAV 密码或应用密码"
+        bindinput="onPasswordInput"
+      />
+
+      <view class="password-toggle" bindtap="togglePassword">
+        {{passwordHidden ? '显示' : '隐藏'}}
+      </view>
+    </view>
+
+    <view class="input-label">默认备份目录</view>
+    <view class="readonly-box">{{defaultBackupDir}}</view>
+  </view>
+
+  <view class="card">
+    <view class="sub-title">当前状态</view>
+
+    <view class="status-row">
+      <view class="status-label">WebDAV</view>
+      <view class="status-value">{{config.enabled ? '已启用' : '未启用'}}</view>
+    </view>
+
+    <view class="status-row">
+      <view class="status-label">配置是否完整</view>
+      <view class="status-value">{{configComplete ? '完整' : '不完整'}}</view>
+    </view>
+
+    <view class="status-row">
+      <view class="status-label">自动备份</view>
+      <view class="status-value">{{config.autoBackupEnabled ? '已开启' : '未开启'}}</view>
+    </view>
+
+    <view class="status-row">
+      <view class="status-label">上次手动/总备份</view>
+      <view class="status-value">{{config.lastBackupFileName || '-'}}</view>
+    </view>
+
+    <view class="status-row">
+      <view class="status-label">上次自动备份</view>
+      <view class="status-value">{{config.lastAutoBackupFileName || '-'}}</view>
+    </view>
+
+    <view class="status-row">
+      <view class="status-label">自动备份时间</view>
+      <view class="status-value">{{config.lastAutoBackupTime || '-'}}</view>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="sub-title">自动备份</view>
+
+    <view class="setting-row">
+      <view>
+        <view class="setting-title">小程序启动时自动保存一次</view>
+        <view class="muted">
+          开启后，小程序启动时检查；如果今天还没有自动备份过，则自动备份一次。
+        </view>
+      </view>
+
+      <switch checked="{{config.autoBackupEnabled}}" color="#2f7cf6" bindchange="onAutoBackupEnabledChange"></switch>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="sub-title">WebDAV 备份</view>
+
+    <view class="input-label">手动备份文件名</view>
+    <input
+      class="input-box"
+      value="{{backupFileName}}"
+      placeholder="不填则自动生成，例如：quiz_full_backup_时间.json"
+      bindinput="onBackupFileNameInput"
+    />
+
+    <button class="test-btn" bindtap="testConnection">
+      测试连接
+    </button>
+
+    <button class="backup-btn" bindtap="backupAllBanks">
+      手动备份全部本地题库
+    </button>
+  </view>
+
+  <view class="card">
+    <view class="sub-title">WebDAV 恢复</view>
+
+    <button class="select-file-btn" bindtap="openBackupFilePicker">
+      选择备份文件
+    </button>
+
+    <view class="selected-file-box">
+      <view class="selected-file-label">当前恢复文件</view>
+      <view class="selected-file-name">{{restoreDisplayText}}</view>
+    </view>
+
+    <view class="restore-tip">
+      不选择备份文件时，默认恢复上一次备份内容。
+    </view>
+
+    <view class="setting-row restore-row">
+      <view>
+        <view class="setting-title">恢复 records 学习记录</view>
+        <view class="muted">开启后会恢复答题、错题、收藏、备注和练习进度。</view>
+      </view>
+
+      <switch checked="{{restoreRecords}}" color="#2f7cf6" bindchange="onRestoreRecordsChange"></switch>
+    </view>
+
+    <view class="setting-row restore-row">
+      <view>
+        <view class="setting-title">覆盖本地 records</view>
+        <view class="muted">关闭为合并恢复；开启为覆盖本地学习记录。</view>
+      </view>
+
+      <switch checked="{{overwriteRecords}}" color="#2f7cf6" bindchange="onOverwriteRecordsChange"></switch>
+    </view>
+
+    <button class="restore-btn" bindtap="restoreFromWebdav">
+      从 WebDAV 恢复题库
+    </button>
+  </view>
+
+  <view class="card">
+    <button class="save-btn" bindtap="saveConfig">
+      保存配置
+    </button>
+
+    <button class="clear-btn" bindtap="clearConfig">
+      清除配置
+    </button>
+  </view>
+
+  <view wx:if="{{statusText}}" class="card">
+    <view class="sub-title">操作结果</view>
+    <view class="status-text">{{statusText}}</view>
+  </view>
+
+  <view wx:if="{{backupFilePickerVisible}}" class="backup-picker-mask" bindtap="closeBackupFilePicker">
+    <view class="backup-picker-panel" catchtap="noop">
+      <view class="backup-picker-head">
+        <view>
+          <view class="backup-picker-title">选择备份文件</view>
+          <view class="backup-picker-subtitle">{{defaultBackupDir}}</view>
+        </view>
+
+        <view class="backup-picker-close" bindtap="closeBackupFilePicker">
+          关闭
+        </view>
+      </view>
+
+      <scroll-view scroll-y="true" class="backup-picker-list">
+        <view wx:if="{{backupFileList.length === 0}}" class="backup-file-empty">
+          暂无可用 JSON 备份文件
+        </view>
+
+        <view
+          wx:for="{{backupFileList}}"
+          wx:key="fileName"
+          class="backup-file-item"
+          data-name="{{item.fileName}}"
+          bindtap="selectBackupFile"
+        >
+          <view>
+            <view class="backup-file-name">{{item.fileName}}</view>
+            <view class="backup-file-meta">
+              {{item.lastModifiedText}} · {{item.sizeText}}
+            </view>
+          </view>
+
+          <view class="backup-file-select">
+            选择
+          </view>
+        </view>
+      </scroll-view>
+
+      <button class="use-last-backup-btn" bindtap="useLastBackup">
+        不选择，使用上一次备份
+      </button>
+    </view>
+  </view>
+</view>

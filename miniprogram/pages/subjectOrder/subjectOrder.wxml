@@ -1,0 +1,62 @@
+<view class="container">
+  <view class="card">
+    <view class="title">科目顺序管理</view>
+    <view class="muted">
+      可调整当前题库中的科目显示顺序，也可以启用或停用科目。
+    </view>
+  </view>
+
+  <view wx:if="{{subjectList.length === 0}}" class="card empty-card">
+    <view class="sub-title">暂无科目</view>
+    <view class="muted">请先进入“题库导入”导入 JSON 题库包。</view>
+  </view>
+
+  <view
+    wx:for="{{subjectList}}"
+    wx:key="subjectId"
+    class="subject-card"
+  >
+    <view class="subject-top">
+      <view>
+        <view class="subject-title">{{item.sortOrder}}. {{item.subjectName}}</view>
+        <view class="muted">题目数量：{{item.questionCount}} 道</view>
+      </view>
+
+      <view class="status-tag {{item.enabled ? 'status-enabled' : 'status-disabled'}}">
+        {{item.enabled ? '已启用' : '已停用'}}
+      </view>
+    </view>
+
+    <view class="subject-actions">
+      <button
+        class="action-btn gray-action"
+        data-id="{{item.subjectId}}"
+        bindtap="moveUp"
+      >
+        上移
+      </button>
+
+      <button
+        class="action-btn gray-action"
+        data-id="{{item.subjectId}}"
+        bindtap="moveDown"
+      >
+        下移
+      </button>
+
+      <button
+        class="action-btn {{item.enabled ? 'disable-action' : 'enable-action'}}"
+        data-id="{{item.subjectId}}"
+        bindtap="toggleEnable"
+      >
+        {{item.enabled ? '停用' : '启用'}}
+      </button>
+    </view>
+  </view>
+
+  <view class="card">
+    <button class="reset-btn" bindtap="resetConfig">
+      恢复默认科目顺序
+    </button>
+  </view>
+</view>

@@ -1,0 +1,92 @@
+.header {
+  margin-bottom: 28rpx;
+}
+
+.main-stat-card {
+  background: linear-gradient(135deg, #2f7cf6, #67a3ff);
+  color: #ffffff;
+}
+
+.answer-stat-card {
+  background: #ffffff;
+}
+
+.answer-stat-title {
+  font-size: 30rpx;
+  font-weight: 700;
+  color: #1f2328;
+  margin-bottom: 22rpx;
+}
+
+.stat-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.answer-stat-row {
+  gap: 12rpx;
+}
+
+.stat-item {
+  flex: 1;
+  text-align: center;
+}
+
+.stat-number {
+  font-size: 46rpx;
+  font-weight: 700;
+  margin-bottom: 8rpx;
+}
+
+.stat-label {
+  font-size: 24rpx;
+  opacity: 0.85;
+}
+
+.answer-number {
+  font-size: 42rpx;
+  font-weight: 700;
+  color: #1f2328;
+  margin-bottom: 8rpx;
+}
+
+.answer-label {
+  font-size: 24rpx;
+  color: #80868f;
+}
+
+.checkin-btn {
+  display: inline-block;
+  min-width: 120rpx;
+  height: 54rpx;
+  line-height: 54rpx;
+  border-radius: 999rpx;
+  background: #ffffff;
+  color: #2f7cf6;
+  font-size: 26rpx;
+  font-weight: 600;
+  margin-bottom: 8rpx;
+}
+
+.checkin-btn.checked {
+  background: rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+}
+
+.function-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.function-title {
+  font-size: 34rpx;
+  font-weight: 700;
+  margin-bottom: 8rpx;
+}
+
+.arrow {
+  font-size: 54rpx;
+  color: #b5bbc4;
+}

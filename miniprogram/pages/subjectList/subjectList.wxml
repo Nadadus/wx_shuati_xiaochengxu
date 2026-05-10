@@ -1,0 +1,84 @@
+<view class="container">
+  <view class="page-header">
+    <view class="title">{{pageTitle}}</view>
+    <view class="muted">{{pageDesc}}</view>
+  </view>
+
+  <view
+    wx:for="{{subjectList}}"
+    wx:key="subjectId"
+    class="subject-card"
+  >
+    <view
+      class="subject-head"
+      data-id="{{item.subjectId}}"
+      bindtap="toggleSubject"
+    >
+      <view class="subject-head-left">
+        <view class="subject-title">{{item.subjectName}}</view>
+        <view class="subject-summary">
+          {{countLabel}}：{{item.doneCount}} / {{item.totalCount}}
+        </view>
+      </view>
+
+      <view class="fold-icon-wrap">
+        <view class="fold-icon {{item.expanded ? 'fold-open' : ''}}"></view>
+      </view>
+    </view>
+
+    <view wx:if="{{item.expanded}}" class="subject-body">
+      <view class="progress-bar">
+        <view class="progress-track"></view>
+        <view class="progress-fill" style="{{item.progressStyle}}"></view>
+        <view class="progress-text">{{item.percent}}%</view>
+      </view>
+
+      <view class="subject-actions">
+        <button
+          class="small-btn primary-small"
+          data-id="{{item.subjectId}}"
+          bindtap="startPractice"
+        >
+          {{actionText}}
+        </button>
+
+        <button
+          class="small-btn gray-small"
+          data-id="{{item.subjectId}}"
+          bindtap="toggleChapter"
+        >
+          章节详情
+        </button>
+      </view>
+
+      <view wx:if="{{item.chapterExpanded}}" class="chapter-list">
+        <view
+          wx:for="{{item.chapters}}"
+          wx:for-item="chapter"
+          wx:key="chapterId"
+          class="chapter-item"
+          data-subject-id="{{item.subjectId}}"
+          data-chapter-id="{{chapter.chapterId}}"
+          bindtap="startChapterPractice"
+        >
+          <view class="chapter-top">
+            <view class="chapter-name">{{chapter.chapterName}}</view>
+            <view class="chapter-count">
+              {{chapter.doneCount}} / {{chapter.totalCount}}
+            </view>
+          </view>
+
+          <view class="chapter-progress">
+            <view class="chapter-progress-track"></view>
+            <view class="chapter-progress-fill" style="{{chapter.progressStyle}}"></view>
+            <view class="chapter-progress-text">{{chapter.percent}}%</view>
+          </view>
+        </view>
+
+        <view wx:if="{{item.chapters.length === 0}}" class="empty-chapter">
+          暂无章节数据
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,66 @@
+<view class="container">
+  <view class="card">
+    <view class="title">学习记录管理</view>
+    <view class="muted">
+      这里可以按全部科目、指定科目或指定章节清理练习进度与记录。所有操作都会二次确认。
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="sub-title">清理范围</view>
+
+    <picker mode="selector" range="{{subjectNames}}" value="{{subjectIndex}}" bindchange="onSubjectChange">
+      <view class="picker-row">
+        <view>科目</view>
+        <view class="picker-value">{{currentSubjectName}} ▼</view>
+      </view>
+    </picker>
+
+    <picker
+      wx:if="{{currentSubjectId !== 'all'}}"
+      mode="selector"
+      range="{{chapterNames}}"
+      value="{{chapterIndex}}"
+      bindchange="onChapterChange"
+    >
+      <view class="picker-row">
+        <view>章节</view>
+        <view class="picker-value">{{currentChapterName}} ▼</view>
+      </view>
+    </picker>
+  </view>
+
+  <view class="card">
+    <view class="sub-title">清空练习进度</view>
+    <view class="muted block-desc">
+      清空练习进度只会重置对应练习中的“已做状态”和进度条，不会删除错题、收藏、备注和题库。
+    </view>
+
+    <button class="manage-btn blue-btn" bindtap="clearSequenceProgress">
+      清空顺序练习进度
+    </button>
+
+    <button class="manage-btn orange-btn" bindtap="clearWrongPracticeProgress">
+      清空错题练习进度
+    </button>
+
+    <button class="manage-btn purple-btn" bindtap="clearFavoritePracticeProgress">
+      清空收藏夹练习进度
+    </button>
+  </view>
+
+  <view class="card">
+    <view class="sub-title">清空记录</view>
+    <view class="muted block-desc">
+      清空错题记录会让题目移出错题集；清空收藏记录会让题目移出收藏夹。备注、顺序练习进度和题库不会被删除。
+    </view>
+
+    <button class="manage-btn light-red-btn" bindtap="clearWrongRecords">
+      清空错题记录
+    </button>
+
+    <button class="manage-btn light-red-btn" bindtap="clearFavoriteRecords">
+      清空收藏记录
+    </button>
+  </view>
+</view>

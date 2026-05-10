@@ -1,0 +1,32 @@
+<view class="container">
+  <view class="card">
+    <view class="title">题库管理</view>
+    <view class="muted">
+      当前题库以本地导入为主。WebDAV 后续仅作为备份和恢复使用，不作为主存储。
+    </view>
+  </view>
+
+  <view class="card function-entry-card" bindtap="goBankImport">
+    <view>
+      <view class="function-title">题库导入</view>
+      <view class="muted">导入 JSON 题库包，支持题目与学习记录</view>
+    </view>
+    <view class="arrow">›</view>
+  </view>
+
+  <view class="card function-entry-card" bindtap="goSubjectOrder">
+    <view>
+      <view class="function-title">科目顺序管理</view>
+      <view class="muted">调整科目显示顺序，启用或停用科目</view>
+    </view>
+    <view class="arrow">›</view>
+  </view>
+
+  <view class="card function-entry-card" bindtap="goLocalBankList">
+    <view>
+      <view class="function-title">本地题库包</view>
+      <view class="muted">查看本机已导入的题库，支持复制 JSON 和删除题库</view>
+    </view>
+    <view class="arrow">›</view>
+  </view>
+</view>

@@ -1,0 +1,73 @@
+<view class="container">
+  <view class="card">
+    <view class="title">本地题库包</view>
+    <view class="muted">
+      这里显示通过“题库导入”保存到本机的题库。删除题库会删除该题库所属的答题记录、错题、收藏、备注和进度。
+    </view>
+  </view>
+
+  <view class="card export-entry-card" bindtap="goBankExport">
+    <view>
+      <view class="function-title">题库打包导出</view>
+      <view class="muted">选择一个或多个本地题库，统一合并导出完整 JSON</view>
+    </view>
+    <view class="arrow">›</view>
+  </view>
+
+  <view wx:if="{{localBankList.length === 0}}" class="card empty-card">
+    <view class="sub-title">暂无本地导入题库</view>
+    <view class="muted">可以点击“题库导入”导入 JSON 题库包。</view>
+  </view>
+
+  <view
+    wx:for="{{localBankList}}"
+    wx:key="bankId"
+    class="local-bank-card"
+    data-id="{{item.bankId}}"
+    bindtap="goBankDetail"
+  >
+    <view class="local-bank-top">
+      <view>
+        <view class="local-bank-title">{{item.bankName}}</view>
+        <view class="muted">题库 ID：{{item.bankId}}</view>
+      </view>
+
+      <view class="local-bank-tag">本地</view>
+    </view>
+
+    <view class="local-bank-info">
+      <view class="local-info-item">
+        <view class="local-info-num">{{item.questionCount}}</view>
+        <view class="local-info-label">题目</view>
+      </view>
+
+      <view class="local-info-item">
+        <view class="local-info-num">{{item.subjectCount}}</view>
+        <view class="local-info-label">科目</view>
+      </view>
+
+      <view class="local-info-item">
+        <view class="local-info-num">{{item.shortTime}}</view>
+        <view class="local-info-label">更新时间</view>
+      </view>
+    </view>
+
+    <view class="local-bank-actions">
+      <button
+        class="local-action-btn copy-bank-btn"
+        data-id="{{item.bankId}}"
+        catchtap="copyBankPackage"
+      >
+        复制JSON
+      </button>
+
+      <button
+        class="local-action-btn delete-bank-btn"
+        data-id="{{item.bankId}}"
+        catchtap="deleteBankPackage"
+      >
+        删除题库
+      </button>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,218 @@
+.empty-card {
+  text-align: center;
+}
+
+.filter-card {
+  margin-bottom: 24rpx;
+}
+
+.filter-scroll {
+  width: 100%;
+  white-space: nowrap;
+}
+
+.filter-row {
+  display: flex;
+  gap: 14rpx;
+  padding: 4rpx 0;
+}
+
+.filter-item {
+  min-width: 120rpx;
+  height: 58rpx;
+  border-radius: 999rpx;
+  padding: 0 24rpx;
+  background: #ffffff;
+  color: #5f6670;
+  font-size: 26rpx;
+  font-weight: 600;
+  box-shadow: 0 8rpx 24rpx rgba(0, 0, 0, 0.04);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-sizing: border-box;
+}
+
+.filter-active {
+  background: #eaf2ff;
+  color: #2f7cf6;
+}
+
+.batch-card {
+  margin-bottom: 24rpx;
+}
+
+.batch-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20rpx;
+}
+
+.batch-mode-btn {
+  width: 160rpx;
+  height: 64rpx;
+  border-radius: 16rpx;
+  background: #eaf2ff;
+  color: #2f7cf6;
+  font-size: 26rpx;
+  font-weight: 600;
+  padding: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  flex-shrink: 0;
+}
+
+.batch-actions {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14rpx;
+  margin-top: 24rpx;
+}
+
+.batch-action-btn {
+  height: 68rpx;
+  border-radius: 16rpx;
+  font-size: 26rpx;
+  font-weight: 600;
+  padding: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.gray-batch-btn {
+  background: #eef0f3;
+  color: #333333;
+}
+
+.restore-batch-btn {
+  background: #eaf2ff;
+  color: #2f7cf6;
+}
+
+.hard-delete-batch-btn {
+  background: #fff0f0;
+  color: #d93025;
+}
+
+.recycle-card {
+  background: #ffffff;
+  border-radius: 28rpx;
+  padding: 30rpx;
+  margin-bottom: 24rpx;
+  box-shadow: 0 8rpx 24rpx rgba(0, 0, 0, 0.04);
+  border: 2rpx solid transparent;
+}
+
+.recycle-card-selected {
+  border-color: #2f7cf6;
+}
+
+.recycle-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20rpx;
+  margin-bottom: 20rpx;
+}
+
+.select-wrap {
+  width: 52rpx;
+  height: 52rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.select-circle {
+  width: 42rpx;
+  height: 42rpx;
+  border-radius: 50%;
+  border: 3rpx solid #c7ccd4;
+  color: #ffffff;
+  font-size: 26rpx;
+  font-weight: 700;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.select-circle-on {
+  background: #2f7cf6;
+  border-color: #2f7cf6;
+}
+
+.recycle-main {
+  flex: 1;
+}
+
+.question-id {
+  font-size: 32rpx;
+  font-weight: 700;
+  color: #1f2328;
+  margin-bottom: 8rpx;
+  word-break: break-all;
+}
+
+.delete-time {
+  margin-top: 6rpx;
+  font-size: 24rpx;
+  color: #9aa1aa;
+}
+
+.status-tag {
+  background: #fff7ed;
+  color: #b45309;
+  padding: 8rpx 18rpx;
+  border-radius: 999rpx;
+  font-size: 24rpx;
+  flex-shrink: 0;
+}
+
+.question-preview {
+  font-size: 28rpx;
+  color: #333333;
+  line-height: 1.7;
+  margin-bottom: 26rpx;
+}
+
+.recycle-actions {
+  display: flex;
+  gap: 14rpx;
+}
+
+.action-btn {
+  flex: 1;
+  height: 70rpx;
+  line-height: 70rpx;
+  border-radius: 16rpx;
+  font-size: 26rpx;
+  padding: 0;
+  font-weight: 600;
+}
+
+.view-btn {
+  background: #eef0f3;
+  color: #333333;
+}
+
+.restore-btn {
+  background: #eaf2ff;
+  color: #2f7cf6;
+}
+
+.hard-delete-btn {
+  background: #fff0f0;
+  color: #d93025;
+}

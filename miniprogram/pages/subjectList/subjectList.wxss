@@ -1,0 +1,239 @@
+.page-header {
+  margin-bottom: 24rpx;
+}
+
+.subject-card {
+  background: #ffffff;
+  border-radius: 28rpx;
+  margin-bottom: 24rpx;
+  overflow: hidden;
+  box-shadow: 0 8rpx 24rpx rgba(0, 0, 0, 0.04);
+}
+
+.subject-head {
+  padding: 30rpx;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.subject-head-left {
+  flex: 1;
+  min-width: 0;
+}
+
+.subject-title {
+  font-size: 34rpx;
+  font-weight: 700;
+  color: #1f2328;
+  margin-bottom: 8rpx;
+}
+
+.subject-summary {
+  font-size: 26rpx;
+  color: #80868f;
+  line-height: 1.6;
+}
+
+.fold-icon-wrap {
+  width: 72rpx;
+  height: 72rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 16rpx;
+  flex-shrink: 0;
+}
+
+.fold-icon {
+  width: 22rpx;
+  height: 22rpx;
+  border-right: 5rpx solid #9aa1aa;
+  border-bottom: 5rpx solid #9aa1aa;
+  transform: rotate(45deg);
+  transition: transform 0.2s ease;
+  box-sizing: border-box;
+}
+
+.fold-open {
+  transform: rotate(-135deg);
+}
+
+.subject-body {
+  padding: 0 30rpx 30rpx 30rpx;
+}
+
+/* 主进度条 */
+.progress-bar {
+  position: relative;
+  width: 100%;
+  height: 24rpx;
+  border-radius: 999rpx;
+  overflow: hidden;
+  margin-bottom: 28rpx;
+}
+
+.progress-track {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  border-radius: 999rpx;
+  background:
+    repeating-linear-gradient(
+      -45deg,
+      #d1d5db 0rpx,
+      #d1d5db 16rpx,
+      #eef1f5 16rpx,
+      #eef1f5 32rpx
+    );
+  z-index: 1;
+}
+
+.progress-fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 0%;
+  min-width: 0;
+  border-radius: 999rpx;
+  background: linear-gradient(90deg, #2f7cf6, #67a3ff);
+  z-index: 2;
+}
+
+.progress-text {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 3;
+  font-size: 22rpx;
+  line-height: 1;
+  color: #5f6670;
+  font-weight: 700;
+  background: rgba(246, 246, 246, 0.86);
+  padding: 0 12rpx;
+  border-radius: 999rpx;
+}
+
+.subject-actions {
+  display: flex;
+  gap: 20rpx;
+}
+
+.small-btn {
+  flex: 1;
+  height: 76rpx;
+  border-radius: 18rpx;
+  font-size: 30rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 0;
+  box-sizing: border-box;
+  font-weight: 600;
+}
+
+.primary-small {
+  background: #2f7cf6;
+  color: #ffffff;
+}
+
+.gray-small {
+  background: #eef0f3;
+  color: #333333;
+}
+
+.chapter-list {
+  margin-top: 26rpx;
+  padding-top: 20rpx;
+  border-top: 1rpx solid #eef0f2;
+}
+
+.chapter-item {
+  padding: 20rpx 0;
+}
+
+.chapter-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14rpx;
+  gap: 20rpx;
+}
+
+.chapter-name {
+  font-size: 28rpx;
+  color: #1f2328;
+  font-weight: 600;
+  flex: 1;
+}
+
+.chapter-count {
+  font-size: 26rpx;
+  color: #80868f;
+  white-space: nowrap;
+}
+
+/* 章节进度条 */
+.chapter-progress {
+  position: relative;
+  width: 100%;
+  height: 18rpx;
+  border-radius: 999rpx;
+  overflow: hidden;
+}
+
+.chapter-progress-track {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  border-radius: 999rpx;
+  background:
+    repeating-linear-gradient(
+      -45deg,
+      #d1d5db 0rpx,
+      #d1d5db 12rpx,
+      #eef1f5 12rpx,
+      #eef1f5 24rpx
+    );
+  z-index: 1;
+}
+
+.chapter-progress-fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 0%;
+  min-width: 0;
+  border-radius: 999rpx;
+  background: linear-gradient(90deg, #2f7cf6, #67a3ff);
+  z-index: 2;
+}
+
+.chapter-progress-text {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 3;
+  font-size: 20rpx;
+  line-height: 1;
+  color: #5f6670;
+  font-weight: 700;
+  background: rgba(246, 246, 246, 0.86);
+  padding: 0 10rpx;
+  border-radius: 999rpx;
+}
+
+.empty-chapter {
+  padding: 20rpx 0;
+  color: #80868f;
+  font-size: 26rpx;
+}

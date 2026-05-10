@@ -1,0 +1,281 @@
+<view class="container">
+  <view class="card header-card">
+    <view class="header-row">
+      <view>
+        <view class="title">题库导入</view>
+        <view class="muted">导入 JSON 题库包，题目和学习记录可一起导入。</view>
+      </view>
+
+      <view class="help-btn" bindtap="openHelp">?</view>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="sub-title">导入方式</view>
+
+    <button class="import-btn primary-import-btn" bindtap="importFromFile">
+      选择 JSON 文件导入
+    </button>
+
+    <button class="import-btn gray-import-btn" bindtap="importFromClipboard">
+      从剪贴板导入
+    </button>
+  </view>
+
+  <view class="card">
+    <view class="sub-title">导入选项</view>
+
+    <view class="switch-row">
+      <view>
+        <view class="switch-title">导入学习记录 records</view>
+        <view class="muted">
+          开启后会合并答题记录、错题、收藏、备注和进度。
+        </view>
+      </view>
+
+      <switch checked="{{importRecords}}" color="#2f7cf6" bindchange="onImportRecordsChange"></switch>
+    </view>
+
+    <view class="notice-text">
+      当前采用“合并记录”方式：导入 records 会合并到本机已有记录，不会清空已有记录。
+    </view>
+  </view>
+
+  <view wx:if="{{previewVisible}}" class="card preview-card">
+    <view class="sub-title">导入前预览</view>
+
+    <view class="preview-row">
+      <view class="preview-label">题库名称</view>
+      <view class="preview-value">{{preview.bankName}}</view>
+    </view>
+
+    <view class="preview-row">
+      <view class="preview-label">题库 ID</view>
+      <view class="preview-value">{{preview.bankId}}</view>
+    </view>
+
+    <view class="preview-grid">
+      <view class="preview-item">
+        <view class="preview-num">{{preview.subjectCount}}</view>
+        <view class="preview-name">科目</view>
+      </view>
+
+      <view class="preview-item">
+        <view class="preview-num">{{preview.chapterCount}}</view>
+        <view class="preview-name">章节</view>
+      </view>
+
+      <view class="preview-item">
+        <view class="preview-num">{{preview.questionCount}}</view>
+        <view class="preview-name">题目</view>
+      </view>
+    </view>
+
+    <view class="preview-grid">
+      <view class="preview-item">
+        <view class="preview-num">{{preview.singleCount}}</view>
+        <view class="preview-name">单选</view>
+      </view>
+
+      <view class="preview-item">
+        <view class="preview-num">{{preview.multipleCount}}</view>
+        <view class="preview-name">多选</view>
+      </view>
+
+      <view class="preview-item">
+        <view class="preview-num">{{preview.judgeCount}}</view>
+        <view class="preview-name">判断</view>
+      </view>
+    </view>
+
+    <view class="record-preview">
+      <view class="record-preview-title">records 学习记录</view>
+
+      <view class="record-preview-row">
+        <view>答题记录 answers</view>
+        <view>{{preview.answerCount}}</view>
+      </view>
+
+      <view class="record-preview-row">
+        <view>错题记录 wrong</view>
+        <view>{{preview.wrongCount}}</view>
+      </view>
+
+      <view class="record-preview-row">
+        <view>收藏记录 favorites</view>
+        <view>{{preview.favoriteCount}}</view>
+      </view>
+
+      <view class="record-preview-row">
+        <view>备注记录 notes</view>
+        <view>{{preview.noteCount}}</view>
+      </view>
+
+      <view class="record-preview-row">
+        <view>顺序练习进度</view>
+        <view>{{preview.sequenceProgressCount}}</view>
+      </view>
+
+      <view class="record-preview-row">
+        <view>错题练习进度</view>
+        <view>{{preview.wrongProgressCount}}</view>
+      </view>
+
+      <view class="record-preview-row">
+        <view>收藏夹练习进度</view>
+        <view>{{preview.favoriteProgressCount}}</view>
+      </view>
+    </view>
+
+    <view wx:if="{{conflictExists}}" class="conflict-box">
+      检测到本地已存在相同 bankId 的题库。你可以覆盖原题库，或另存为新题库。
+    </view>
+
+    <view wx:if="{{warnings.length > 0}}" class="result-section">
+      <view class="result-subtitle">警告</view>
+      <view wx:for="{{warnings}}" wx:key="index" class="warning-line">
+        {{index + 1}}. {{item}}
+      </view>
+    </view>
+
+    <view class="preview-actions" wx:if="{{!conflictExists}}">
+      <button class="confirm-import-btn" data-mode="overwrite" bindtap="confirmImport">
+        确认导入
+      </button>
+
+      <button class="cancel-import-btn" bindtap="cancelPreview">
+        取消
+      </button>
+    </view>
+
+    <view class="preview-actions" wx:else>
+      <button class="confirm-import-btn" data-mode="overwrite" bindtap="confirmImport">
+        覆盖原题库
+      </button>
+
+      <button class="save-as-btn" data-mode="new" bindtap="confirmImport">
+        另存为新题库
+      </button>
+
+      <button class="cancel-import-btn" bindtap="cancelPreview">
+        取消
+      </button>
+    </view>
+  </view>
+
+  <view wx:if="{{resultVisible}}" class="card result-card">
+    <view class="sub-title">导入结果</view>
+
+    <view class="result-line">状态：{{result.ok ? '成功' : '失败'}}</view>
+    <view class="result-line">信息：{{result.message}}</view>
+
+    <view wx:if="{{result.bankName}}" class="result-line">
+      题库名称：{{result.bankName}}
+    </view>
+
+    <view wx:if="{{result.bankId}}" class="result-line">
+      题库 ID：{{result.bankId}}
+    </view>
+
+    <view wx:if="{{result.questionCount !== null}}" class="result-line">
+      题目数量：{{result.questionCount}}
+    </view>
+
+    <view wx:if="{{warnings.length > 0}}" class="result-section">
+      <view class="result-subtitle">警告</view>
+      <view wx:for="{{warnings}}" wx:key="index" class="warning-line">
+        {{index + 1}}. {{item}}
+      </view>
+    </view>
+
+    <view wx:if="{{errors.length > 0}}" class="result-section">
+      <view class="result-subtitle error-title">错误</view>
+      <view wx:for="{{errors}}" wx:key="index" class="error-line">
+        {{index + 1}}. {{item}}
+      </view>
+    </view>
+  </view>
+
+  <view wx:if="{{showHelp}}" class="help-mask" bindtap="closeHelp">
+    <view class="help-panel" catchtap="noop">
+      <view class="help-head">
+        <view class="help-title">题库 JSON 模板与说明</view>
+        <view class="help-close" bindtap="closeHelp">关闭</view>
+      </view>
+
+      <scroll-view scroll-y="true" class="help-content">
+        <view class="help-section-title">一、总体结构</view>
+        <view class="help-text">schemaVersion：题库包格式版本，例如 "1.0.0"</view>
+        <view class="help-text">packageType：固定为 "quiz_bank_package"</view>
+        <view class="help-text">bankInfo：题库基本信息</view>
+        <view class="help-text">subjects：科目列表</view>
+        <view class="help-text">chapters：章节列表</view>
+        <view class="help-text">questions：题目本体</view>
+        <view class="help-text">records：学习记录</view>
+
+        <view class="help-section-title">二、subjects 科目字段</view>
+        <view class="help-text">subjectId：科目编号</view>
+        <view class="help-text">subjectName：科目名称</view>
+        <view class="help-text">sortOrder：科目显示顺序，数字越小越靠前</view>
+        <view class="help-text">enabled：是否启用，true 为启用，false 为停用</view>
+
+        <view class="help-section-title">三、chapters 章节字段</view>
+        <view class="help-text">subjectId：所属科目编号，需要与 subjects 中的 subjectId 对应</view>
+        <view class="help-text">chapterId：章节编号，建议使用 "01"、"02" 这种格式</view>
+        <view class="help-text">chapterName：章节名称</view>
+        <view class="help-text">sortOrder：章节显示顺序，数字越小越靠前</view>
+        <view class="help-text">enabled：是否启用，true 为启用，false 为停用</view>
+
+        <view class="help-section-title">四、questions 题目字段</view>
+        <view class="help-text">id：题目唯一编号，建议使用 subjectId_chapterId_questionNo，例如 "3_01_001"</view>
+        <view class="help-text">subjectId：所属科目编号</view>
+        <view class="help-text">chapterId：所属章节编号</view>
+        <view class="help-text">questionNo：题目序号</view>
+        <view class="help-text">type：题型</view>
+        <view class="help-text">question：题干</view>
+        <view class="help-text">options：选项数组</view>
+        <view class="help-text">answer：答案数组，例如 ["A"] 或 ["A", "B"]</view>
+        <view class="help-text">analysis：题目解析</view>
+
+        <view class="help-section-title">五、type 题型说明</view>
+        <view class="help-text">single：单选题</view>
+        <view class="help-text">multiple：多选题</view>
+        <view class="help-text">judge：判断题</view>
+
+        <view class="help-section-title">六、records 学习记录说明</view>
+        <view class="help-text">answers：答题记录</view>
+        <view class="help-text">wrong：错题记录</view>
+        <view class="help-text">favorites：收藏记录</view>
+        <view class="help-text">notes：备注记录</view>
+        <view class="help-text">sequenceProgress：顺序练习进度</view>
+        <view class="help-text">wrongProgress：错题练习进度</view>
+        <view class="help-text">favoriteProgress：收藏夹练习进度</view>
+        <view class="help-text">deleted：回收站 / 删除标记</view>
+        <view class="help-text">stats：学习统计</view>
+
+        <view class="help-section-title">七、重要规则</view>
+        <view class="help-text">1. questions 只保存题目本体。</view>
+        <view class="help-text">2. records 保存题目对应的学习数据。</view>
+        <view class="help-text">3. 备注、正确错误、收藏与否、错题记录、进度等数据都放在 records 中。</view>
+        <view class="help-text">4. JSON 文件中不能写注释，否则可能导入失败。</view>
+
+        <view class="help-section-title">模板操作</view>
+        <view class="template-preview">
+          可复制完整 JSON 模板、字段说明，也可以复制 AI 生成规范，让其他 AI 根据 PDF / 文本生成可导入题库 JSON。
+        </view>
+
+        <button class="copy-template-btn" bindtap="copyTemplate">
+          复制完整 JSON 模板
+        </button>
+
+        <button class="copy-template-btn" bindtap="copyGuide">
+          复制字段说明
+        </button>
+
+        <button class="copy-template-btn" bindtap="copyAiPrompt">
+          复制 AI 生成规范
+        </button>
+      </scroll-view>
+    </view>
+  </view>
+</view>

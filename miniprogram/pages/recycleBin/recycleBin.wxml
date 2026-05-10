@@ -1,0 +1,112 @@
+<view class="container">
+  <view class="card">
+    <view class="title">题库回收站</view>
+    <view class="muted">
+      回收站中的题目不会出现在顺序练习和错题练习中。彻底删除后，收藏题目中也不会再显示。
+    </view>
+  </view>
+
+  <view wx:if="{{subjectFilterList.length > 1}}" class="filter-card">
+    <scroll-view scroll-x="true" class="filter-scroll">
+      <view class="filter-row">
+        <view
+          wx:for="{{subjectFilterList}}"
+          wx:key="value"
+          class="filter-item {{item.active ? 'filter-active' : ''}}"
+          data-id="{{item.value}}"
+          bindtap="setSubjectFilter"
+        >
+          {{item.label}} {{item.count}}
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+
+  <view wx:if="{{allList.length > 0}}" class="card batch-card">
+    <view class="batch-top">
+      <view>
+        <view class="sub-title">批量管理</view>
+        <view class="muted">已选择 {{selectedCount}} 道题目</view>
+      </view>
+
+      <button class="batch-mode-btn" bindtap="toggleBatchMode">
+        {{batchMode ? '退出批量' : '批量选择'}}
+      </button>
+    </view>
+
+    <view wx:if="{{batchMode}}" class="batch-actions">
+      <button class="batch-action-btn gray-batch-btn" bindtap="selectAllVisible">
+        全选当前
+      </button>
+
+      <button class="batch-action-btn gray-batch-btn" bindtap="clearSelected">
+        清空选择
+      </button>
+
+      <button class="batch-action-btn restore-batch-btn" bindtap="batchRestore">
+        批量恢复
+      </button>
+
+      <button class="batch-action-btn hard-delete-batch-btn" bindtap="batchHardDelete">
+        批量彻底删除
+      </button>
+    </view>
+  </view>
+
+  <view wx:if="{{list.length === 0}}" class="card empty-card">
+    <view class="sub-title">{{emptyText}}</view>
+    <view class="muted">你删除的题目会显示在这里。</view>
+  </view>
+
+  <view
+    wx:for="{{list}}"
+    wx:key="id"
+    class="recycle-card {{item.selected ? 'recycle-card-selected' : ''}}"
+  >
+    <view class="recycle-top">
+      <view wx:if="{{batchMode}}" class="select-wrap" data-id="{{item.id}}" catchtap="toggleSelect">
+        <view class="select-circle {{item.selected ? 'select-circle-on' : ''}}">
+          {{item.selected ? '✓' : ''}}
+        </view>
+      </view>
+
+      <view class="recycle-main">
+        <view class="question-id">{{item.id}}</view>
+        <view class="muted">{{item.subjectName}} · {{item.chapterName}}</view>
+        <view class="delete-time">删除时间：{{item.deletedAtText}}</view>
+      </view>
+
+      <view class="status-tag">回收站</view>
+    </view>
+
+    <view class="question-preview">
+      {{item.question}}
+    </view>
+
+    <view class="recycle-actions">
+      <button
+        class="action-btn view-btn"
+        data-id="{{item.id}}"
+        bindtap="viewQuestion"
+      >
+        查看题目
+      </button>
+
+      <button
+        class="action-btn restore-btn"
+        data-id="{{item.id}}"
+        bindtap="restoreQuestion"
+      >
+        恢复
+      </button>
+
+      <button
+        class="action-btn hard-delete-btn"
+        data-id="{{item.id}}"
+        bindtap="hardDeleteQuestion"
+      >
+        彻底删除
+      </button>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,16 @@
+.function-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.function-title {
+  font-size: 34rpx;
+  font-weight: 700;
+  margin-bottom: 8rpx;
+}
+
+.arrow {
+  font-size: 54rpx;
+  color: #b5bbc4;
+}
