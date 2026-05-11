@@ -1,0 +1,664 @@
+{
+  "schemaVersion": "1.0.0",
+  "documentType": "ai_agent_project_context",
+  "generatedAt": "2026-05-11T01:40:05.239981Z",
+  "language": "zh-CN",
+  "project": {
+    "name": "wx-quiz-bank",
+    "displayName": "微信小程序本地刷题工具",
+    "type": "WeChat Mini Program",
+    "stage": "本地刷题版定稿，进入开源整理与最终测试阶段",
+    "corePositioning": "一个通用的本地优先刷题小程序模板，支持 JSON 题库导入、顺序练习、错题练习、收藏题目、备注、本地题库管理和题目回收站。",
+    "notPositioning": [
+      "不是某个具体考试的官方题库仓库",
+      "不开源真实考试题库",
+      "不开源 PDF 原始资料",
+      "不开源任何密钥、账号、真实 appid 或云函数配置"
+    ],
+    "primaryPurpose": [
+      "把 PDF、图片、文本等学习资料整理成 JSON 题库后导入小程序刷题",
+      "小程序作为本地刷题工具使用，便于个人复习、错题管理、收藏和备注",
+      "开源后作为通用微信小程序刷题模板，供其他人学习或二次开发"
+    ],
+    "currentVersion": "v0.1.0-local",
+    "developmentPrinciple": [
+      "当前版本不再新增功能，只做测试、清理和 bug 修复",
+      "WebDAV、AI 解释、微信登录、云数据库、多设备同步全部作为未来计划，当前开源版暂不包含相关代码",
+      "优先保证本地题库导入、刷题、错题、收藏、回收站和本地题库管理稳定可用"
+    ]
+  },
+  "openSourcePlan": {
+    "repositoryNameSuggested": "wx-quiz-bank",
+    "licenseSuggested": "MIT",
+    "openSourceIncludes": [
+      "小程序源码",
+      "页面结构",
+      "工具函数",
+      "JSON 题库模板",
+      "AI 生成 JSON 的提示词规范",
+      "自编示例题库",
+      "README 使用说明"
+    ],
+    "openSourceExcludes": [
+      "从 PDF 提取出来的真实考试题库",
+      "8 份 PDF 原文件",
+      "行政能力测试 PDF",
+      "可能涉及版权的题目、答案、解析",
+      "WebDAV 账号、密码、地址",
+      "Gemini API Key",
+      "微信小程序 appid、secret",
+      "云函数真实配置",
+      "cloudfunctions/",
+      "uploadCloudFunction.sh",
+      "project.private.config.json",
+      "真实 project.config.json",
+      "WebDAV 相关代码：pages/webdavSettings、utils/webdavClient.js、utils/webdavStore.js、utils/webdavBackupService.js"
+    ],
+    "currentOpenSourceDirectoryObservation": {
+      "rootVisible": [
+        "miniprogram/",
+        ".gitignore",
+        "LICENSE",
+        "README.md"
+      ],
+      "miniprogramVisible": [
+        "config/",
+        "data/",
+        "pages/",
+        "utils/",
+        "app.js",
+        "app.json",
+        "app.wxss",
+        "envList.js",
+        "sitemap.json"
+      ],
+      "checkedByUser": [
+        "chapters.js",
+        "questions.js",
+        "importedQuestions.js",
+        "questionBanks.js"
+      ],
+      "explicitDecisions": [
+        "真实 project.config.json 不上传",
+        "WebDAV 相关代码先不上传",
+        "app.json 已删除 pages/webdavSettings/webdavSettings"
+      ]
+    },
+    "recommendedDocs": [
+      "README.md：项目说明、构建思路、功能列表、未来计划、版权声明",
+      "docs/images/：放运行截图",
+      "examples/demo-quiz-bank.json：只放自编示例题库"
+    ],
+    "screenshotPlacement": {
+      "recommendedFolder": "docs/images/",
+      "recommendedNames": [
+        "home.png",
+        "subject-list.png",
+        "practice.png",
+        "answer-card.png",
+        "bank-import.png",
+        "local-bank-detail.png",
+        "recycle-bin.png"
+      ],
+      "readmeEmbeddingExample": "<p align=\"center\"><img src=\"docs/images/home.png\" width=\"260\" alt=\"首页\" /><img src=\"docs/images/practice.png\" width=\"260\" alt=\"答题页\" /></p>"
+    }
+  },
+  "architecture": {
+    "designPattern": "本地优先、题目本体与学习记录分离、页面模块化、工具函数集中管理",
+    "dataSeparation": {
+      "questionBody": "questions 中保存题目本体，包括题目 ID、科目、章节、题号、题型、题干、选项、答案、解析。",
+      "learningRecords": "records 中保存学习数据，包括答题、错题、收藏、备注、顺序练习进度、错题练习进度、收藏夹练习进度、删除状态和统计信息。",
+      "benefits": [
+        "题目内容和学习数据相互独立",
+        "题库可以单独导入导出",
+        "学习记录可以跟随题库包备份",
+        "后续扩展 WebDAV、云数据库、多设备同步更方便"
+      ]
+    },
+    "storage": {
+      "localBankStorage": "localBankStore.js 负责本地题库包存储。优先保存到本地文件；如果本地文件保存失败，则回退到本地缓存。",
+      "recordStorage": "recordStore.js 使用 wx storage 保存答题、错题、收藏、备注、进度、回收站和统计信息。",
+      "noBackendCurrent": "当前版本不依赖服务器、不依赖云函数、不要求微信登录。"
+    },
+    "mainFolders": {
+      "miniprogram/pages": "小程序页面目录",
+      "miniprogram/utils": "核心工具函数目录",
+      "miniprogram/data": "模板、示例题库、示例章节和题库配置目录",
+      "miniprogram/config": "项目配置目录"
+    },
+    "pageModules": [
+      {
+        "path": "pages/home/",
+        "role": "首页，展示学习天数、倒计时、签到、做题数量、正确率，并提供顺序练习、错题练习、收藏题目、我的入口。"
+      },
+      {
+        "path": "pages/subjectList/",
+        "role": "科目与章节练习入口，展示科目、章节、进度条，并进入对应练习模式。"
+      },
+      {
+        "path": "pages/practice/",
+        "role": "答题页，处理答题、提交、解析、收藏、备注、答题卡、删除本题、移出错题等交互。"
+      },
+      {
+        "path": "pages/mine/",
+        "role": "我的页面，只保留学习设置、题库管理、学习记录管理、题库回收站入口。"
+      },
+      {
+        "path": "pages/bankManage/",
+        "role": "题库管理入口。"
+      },
+      {
+        "path": "pages/bankImport/",
+        "role": "题库导入，支持文件导入、剪贴板导入、导入前预览、bankId 冲突处理、模板与 AI 生成规范帮助。"
+      },
+      {
+        "path": "pages/subjectOrder/",
+        "role": "科目顺序管理。"
+      },
+      {
+        "path": "pages/localBankList/",
+        "role": "本地题库包列表，支持进入详情、复制题库 JSON、删除题库。"
+      },
+      {
+        "path": "pages/localBankDetail/",
+        "role": "本地题库详情，展示统计、records 数量、章节详情，支持重命名、复制 JSON、删除题库。"
+      },
+      {
+        "path": "pages/localBankExport/",
+        "role": "题库打包导出。"
+      },
+      {
+        "path": "pages/recycleBin/",
+        "role": "题库回收站，支持筛选、查看、恢复、彻底删除、批量管理。"
+      },
+      {
+        "path": "pages/recordManage/",
+        "role": "学习记录管理，支持清空各类练习进度或记录。"
+      },
+      {
+        "path": "pages/studySettings/",
+        "role": "学习设置，例如考试日期设置。"
+      }
+    ],
+    "utilityModules": [
+      {
+        "path": "utils/importValidator.js",
+        "role": "题库 JSON 解析、标准化和格式校验。"
+      },
+      {
+        "path": "utils/localBankStore.js",
+        "role": "本地题库包存储、读取、索引维护、删除。"
+      },
+      {
+        "path": "utils/questionStore.js",
+        "role": "题目读取、合并、标准化、按科目章节查询、排序。"
+      },
+      {
+        "path": "utils/recordStore.js",
+        "role": "答题记录、错题、收藏、备注、练习进度、回收站和统计数据管理。"
+      },
+      {
+        "path": "utils/subjectStore.js",
+        "role": "科目配置和排序管理。"
+      },
+      {
+        "path": "utils/study.js",
+        "role": "学习天数、签到、首页统计。"
+      },
+      {
+        "path": "utils/quizProgress.js",
+        "role": "练习进度辅助逻辑。"
+      },
+      {
+        "path": "utils/bankPackageExportStore.js",
+        "role": "题库打包导出。"
+      }
+    ]
+  },
+  "quizBankPackage": {
+    "packageType": "quiz_bank_package",
+    "topLevelFields": [
+      "schemaVersion",
+      "packageType",
+      "bankInfo",
+      "subjects",
+      "chapters",
+      "questions",
+      "records"
+    ],
+    "bankInfo": [
+      "bankId",
+      "bankName",
+      "description",
+      "sourceType",
+      "createTime",
+      "updateTime"
+    ],
+    "subjects": [
+      "subjectId",
+      "subjectName",
+      "sortOrder",
+      "enabled"
+    ],
+    "chapters": [
+      "subjectId",
+      "chapterId",
+      "chapterName",
+      "sortOrder",
+      "enabled"
+    ],
+    "questions": [
+      "id",
+      "subjectId",
+      "chapterId",
+      "questionNo",
+      "type",
+      "question",
+      "options",
+      "answer",
+      "analysis"
+    ],
+    "records": [
+      "answers",
+      "wrong",
+      "favorites",
+      "notes",
+      "sequenceProgress",
+      "wrongProgress",
+      "favoriteProgress",
+      "deleted",
+      "stats"
+    ],
+    "supportedQuestionTypes": {
+      "single": "单选题",
+      "multiple": "多选题",
+      "judge": "判断题"
+    },
+    "recommendedQuestionIdRule": "subjectId_chapterId_questionNo，例如 3_01_001。为避免多题库合并后冲突，不同题库或科目建议使用不同 subjectId 范围。",
+    "aiGenerationPromptPurpose": "帮助其他 AI 根据 PDF、图片或文本资料生成符合本小程序导入要求的 quiz_bank_package JSON。"
+  },
+  "coreFlows": {
+    "importFlow": {
+      "entry": "我的 → 题库管理 → 题库导入",
+      "methods": [
+        "选择 JSON 文件导入",
+        "从剪贴板导入"
+      ],
+      "steps": [
+        "读取 JSON 文本",
+        "parseBankPackageText 解析 JSON",
+        "normalizeBankPackage 标准化字段",
+        "validateBankPackage 校验格式",
+        "显示导入前预览",
+        "检测同 bankId 冲突",
+        "用户选择覆盖原题库、另存为新题库或取消导入",
+        "saveBankPackage 保存题库",
+        "可选导入 records 学习记录",
+        "重置科目配置缓存"
+      ],
+      "validationRules": [
+        "questions 必须是非空数组",
+        "题目 ID 不应重复",
+        "同一章节内 questionNo 不应重复",
+        "subjectId 应在 subjects 中存在",
+        "chapterId 应在 chapters 中存在并归属于正确 subjectId",
+        "type 只能是 single、multiple、judge",
+        "options 需要 key 和 text",
+        "options.key 不应重复",
+        "answer 必须是数组",
+        "answer 中的选项必须存在于 options.key",
+        "single 只能有一个答案",
+        "multiple 至少一个答案",
+        "judge 只能有 A/B 中的一个答案",
+        "records 的各字段应为对象"
+      ],
+      "conflictHandling": {
+        "condition": "本地已存在相同 bankId 的题库",
+        "options": [
+          "覆盖原题库",
+          "另存为新题库，自动生成新的 bankId，并在题库名称后加（副本）",
+          "取消导入"
+        ]
+      }
+    },
+    "sequencePracticeFlow": {
+      "purpose": "按科目、章节、题号顺序刷题。",
+      "queueBuild": [
+        "根据 mode=sequence、subjectId、chapterId 从 questionStore 中筛选题目",
+        "过滤已彻底删除题目",
+        "过滤回收站题目",
+        "按科目顺序、章节顺序、题号排序",
+        "生成 queue"
+      ],
+      "entryPosition": "优先定位到当前范围内第一道未完成题；如果全部完成，则从第一题开始。",
+      "onSubmit": [
+        "如果未选择答案，禁止提交并提示",
+        "调用 recordStore.submitAnswer 保存答题记录和顺序练习进度",
+        "更新总做题数量和正确率统计",
+        "若答错，自动加入错题集",
+        "答错不会自动加入收藏"
+      ],
+      "wrongBehavior": "顺序练习中答错后自动进入错题集。",
+      "favoriteBehavior": "收藏只能手动星标操作，答错不会自动收藏。"
+    },
+    "wrongPracticeFlow": {
+      "purpose": "只练习错题记录中的题目。",
+      "queueBuild": [
+        "根据 mode=wrong 从 wrongMap 中筛选错题",
+        "过滤回收站题目",
+        "过滤彻底删除题目",
+        "可按科目和章节限制范围"
+      ],
+      "importantDecision": "错题练习中即使做对，也不会自动移出错题。",
+      "removeWrong": [
+        "用户点击移出错题按钮",
+        "弹窗二次确认",
+        "recordStore.removeWrong 删除 wrong 和 wrongProgress 中的对应记录",
+        "如果当前处于错题练习，题目立即从当前题池移出",
+        "收藏和备注不受影响"
+      ]
+    },
+    "favoritePracticeFlow": {
+      "purpose": "只练习手动收藏的题目。",
+      "queueBuild": [
+        "根据 mode=favorite 从 favoriteMap 中筛选题目",
+        "过滤彻底删除题目",
+        "收藏模式下允许查看已进入回收站但未彻底删除的收藏题"
+      ],
+      "favoritePolicy": [
+        "收藏只能通过星标手动加入",
+        "取消收藏只能通过星标手动取消",
+        "做错不会自动进入收藏"
+      ],
+      "cancelInFavoriteMode": "收藏练习中取消收藏后，当前题立即从收藏题池移出。"
+    },
+    "practicePageFlow": {
+      "questionTypes": [
+        "single",
+        "multiple",
+        "judge"
+      ],
+      "selectionRules": [
+        "单选题和判断题点击选项后只保留一个选择",
+        "多选题可选择多个选项",
+        "多选题再次点击已选选项可取消选择",
+        "未选择任何答案时不能提交"
+      ],
+      "afterSubmit": [
+        "显示用户答案",
+        "显示正确答案",
+        "显示解析",
+        "选项区区分正确答案和用户错误选择",
+        "刷新答题卡状态"
+      ],
+      "notes": "每道题支持独立备注，备注与题目 ID 绑定。",
+      "favorite": "通过星标切换收藏状态。",
+      "deleteQuestion": "删除本题后进入回收站，并自动跳转到下一题；如果无题，则显示空状态。"
+    },
+    "answerCardFlow": {
+      "purpose": "快速查看当前题目队列和跳转题目。",
+      "filters": [
+        "全部",
+        "已做",
+        "未做",
+        "错题",
+        "收藏"
+      ],
+      "statusColors": [
+        "当前题",
+        "答对题",
+        "答错题",
+        "未做题"
+      ],
+      "jump": "点击题号跳转到对应题目。"
+    },
+    "noteFlow": {
+      "purpose": "记录易错点、公式、个人理解或解题思路。",
+      "saveBehavior": [
+        "点击保存备注后写入 noteMap",
+        "按钮文字短暂显示已保存",
+        "约 2 秒后恢复保存备注"
+      ],
+      "dataBinding": "备注数据与 questionId 绑定，不影响答题、错题和收藏记录。"
+    },
+    "recycleBinFlow": {
+      "purpose": "管理被删除但未彻底删除的题目。",
+      "deleteToRecycle": [
+        "答题页点击删除本题",
+        "二次确认",
+        "recordStore.moveQuestionToRecycle 写入 deletedMap，deleteStatus=recycle",
+        "顺序练习和错题练习不再显示该题",
+        "收藏题目中可继续查看未彻底删除的收藏题"
+      ],
+      "features": [
+        "查看题目",
+        "按科目筛选",
+        "单题恢复",
+        "单题彻底删除",
+        "批量选择",
+        "批量恢复",
+        "批量彻底删除"
+      ],
+      "restore": [
+        "从 deletedMap 删除对应 recycle 记录",
+        "题目重新出现在顺序练习中",
+        "若仍有 wrong 记录，也可重新出现在错题练习中"
+      ],
+      "hardDelete": [
+        "二次确认并显示影响范围",
+        "清除 answers、wrong、favorites、notes、sequenceProgress、wrongProgress、favoriteProgress",
+        "保留 hard_deleted 标记，避免题目重新显示",
+        "重建统计"
+      ]
+    },
+    "localBankManagementFlow": {
+      "features": [
+        "查看本地题库包列表",
+        "进入题库详情",
+        "查看题库统计",
+        "查看 records 数量",
+        "查看章节详情",
+        "修改题库名称",
+        "复制题库 JSON",
+        "删除题库"
+      ],
+      "deleteBank": [
+        "删除前显示影响范围",
+        "影响范围包括题目、答题、错题、收藏、备注、练习进度、回收站记录",
+        "确认后清理该题库题目对应 records",
+        "删除本地题库包文件或缓存",
+        "重置科目配置"
+      ],
+      "renameBank": "修改 bankInfo.bankName 并更新 updateTime 后重新保存题库包。"
+    },
+    "recordManagementFlow": {
+      "features": [
+        "清空顺序练习进度",
+        "清空错题练习进度",
+        "清空收藏夹练习进度",
+        "清空错题记录",
+        "清空收藏记录"
+      ],
+      "confirmation": "清空记录和清空进度都需要二次确认。",
+      "principle": "清空进度不删除题库本体。"
+    }
+  },
+  "uiUxDecisions": {
+    "visualStyle": [
+      "整体背景使用浅灰色 #F6F6F6",
+      "卡片式布局，圆角白色容器",
+      "主要操作按钮使用蓝色",
+      "危险操作使用浅红背景和红色文字",
+      "恢复类或提醒类操作使用橙色或浅橙色"
+    ],
+    "progressBar": [
+      "已完成部分使用蓝色",
+      "未完成部分使用灰色斜粗线填充",
+      "百分比显示在进度条上方或进度条内部",
+      "科目和章节都显示完成数与百分比"
+    ],
+    "practicePage": [
+      "顶部显示题型、题号、星标和答题卡入口",
+      "答题卡图标和星标图标不使用外框",
+      "备注区保存按钮放在我的备注行右侧，按钮尺寸略大于文字",
+      "删除本题放在页面底部",
+      "错题练习中移出错题按钮放在删除本题上方"
+    ],
+    "interactionSafety": [
+      "删除本题需要二次确认",
+      "移出错题需要二次确认",
+      "彻底删除需要二次确认",
+      "批量彻底删除显示影响范围",
+      "清空记录和清空进度需要二次确认",
+      "删除题库前显示影响范围"
+    ]
+  },
+  "deferredFeatures": [
+    {
+      "name": "WebDAV 备份 / 恢复",
+      "status": "当前开源版暂不包含代码，未来计划",
+      "plannedCapabilities": [
+        "手动备份",
+        "自动备份",
+        "从 WebDAV 恢复",
+        "备份文件选择",
+        "恢复前预览",
+        "复用题库导入前预览和 bankId 冲突处理"
+      ]
+    },
+    {
+      "name": "AI 解释",
+      "status": "未来计划",
+      "plannedCapabilities": [
+        "题目下方 AI 解释按钮",
+        "通过云函数调用 Gemini 或其他模型",
+        "前端不直接持有 API Key",
+        "可扩展为针对当前题目的对话式解释"
+      ]
+    },
+    {
+      "name": "微信登录",
+      "status": "未来计划",
+      "plannedCapabilities": [
+        "区分不同用户",
+        "为云端保存和多设备同步提供身份基础"
+      ]
+    },
+    {
+      "name": "云端数据库保存题库",
+      "status": "未来计划",
+      "plannedCapabilities": [
+        "题库云端保存",
+        "学习记录云端保存",
+        "错题、收藏、备注云端保存",
+        "云端数据恢复"
+      ]
+    },
+    {
+      "name": "多设备同步",
+      "status": "未来计划",
+      "plannedCapabilities": [
+        "同步刷题进度",
+        "同步错题",
+        "同步收藏",
+        "同步备注",
+        "同步题库包信息"
+      ]
+    }
+  ],
+  "finalizedFeatureSet": [
+    "首页统计与入口",
+    "顺序练习",
+    "错题练习",
+    "收藏题目",
+    "单选题、多选题、判断题",
+    "答题卡与筛选",
+    "收藏星标",
+    "题目备注",
+    "删除本题",
+    "移出错题",
+    "题库导入",
+    "导入前预览",
+    "bankId 冲突处理",
+    "题库格式增强校验",
+    "本地题库包列表",
+    "题库详情",
+    "题库重命名",
+    "章节详情",
+    "题库打包导出",
+    "删除题库影响范围提示",
+    "学习记录管理",
+    "题库回收站",
+    "回收站筛选",
+    "批量恢复",
+    "批量彻底删除",
+    "AI 生成题库 JSON 提示词规范"
+  ],
+  "testingChecklist": [
+    "启动页是否进入 pages/home/home",
+    "mine 页面是否只保留学习设置、题库管理、学习记录管理、题库回收站",
+    "题库导入：复制模板后从剪贴板导入是否显示预览",
+    "重复导入相同 bankId 是否显示覆盖、另存、取消",
+    "顺序练习是否按科目章节题号生成题池",
+    "单选题是否只能选择一个选项",
+    "多选题是否可多选和取消",
+    "未选择答案时是否禁止提交",
+    "答错后是否进入错题集",
+    "错题练习中做对是否不会自动移出",
+    "移出错题是否使题目从错题题池移出",
+    "星标收藏和取消收藏是否正常",
+    "收藏练习中取消收藏是否移出当前题池",
+    "备注保存是否正常",
+    "答题卡筛选是否正常",
+    "删除本题是否进入回收站并跳下一题",
+    "回收站查看、恢复、彻底删除、批量操作是否正常",
+    "彻底删除后顺序练习、错题练习、收藏题目中是否都不显示",
+    "本地题库包重命名、复制 JSON、删除题库是否正常",
+    "删除题库是否清理对应 records",
+    "开源版是否不包含 PDF、真实题库、真实 appid、密钥、云函数、WebDAV 代码"
+  ],
+  "instructionsForFutureAIAgent": {
+    "howToUseThisContext": [
+      "先理解本项目是微信小程序本地刷题工具，不是题库内容仓库。",
+      "不要要求接入 WebDAV、AI、微信登录、云数据库等功能，除非用户明确恢复这些未来计划。",
+      "修改代码前应尽量基于用户当前文件，不要覆盖已经稳定的功能。",
+      "对于新增代码，应注意 app.json 页面路径、require 路径和 utils 导出函数一致性。",
+      "任何真实题库、PDF、密钥、appid、账号密码都不应写入开源仓库。",
+      "题库导入和 WebDAV 恢复未来应复用同一套导入预览与 bankId 冲突处理逻辑。"
+    ],
+    "codeModificationPreferences": [
+      "用户偏好先说明拟修改内容，经同意后再改代码。",
+      "如只修改局部，应给出修改位置；若修改点分散且文件不长，可以给完整替换代码。",
+      "不要使用 HTML 折叠标签展示代码。"
+    ],
+    "warnings": [
+      "不要恢复 pages/webdavSettings 引用，除非 WebDAV 文件也恢复上传。",
+      "如果不上传真实 project.config.json，应使用 project.config.example.json。",
+      "questionStore 会合并本地题库并按 question.id 去重，因此多题库题目 ID 应全局尽量唯一。",
+      "彻底删除题目时应同时清理 records，但保留 hard_deleted 标记，防止题目再次显示。",
+      "错题练习中做对后不自动移出错题，这是用户明确决定。"
+    ]
+  },
+  "suggestions": [
+    {
+      "title": "建议补充 examples/demo-quiz-bank.json",
+      "detail": "放 3 道自编示例题即可：单选、多选、判断各 1 道。不要放真实考试题。"
+    },
+    {
+      "title": "建议在 README 增加运行截图",
+      "detail": "将图片放在 docs/images/，用英文命名，例如 home.png、practice.png、bank-import.png。"
+    },
+    {
+      "title": "建议新建 project.config.example.json",
+      "detail": "真实 project.config.json 不上传，示例文件中 appid 使用 touristappid。"
+    },
+    {
+      "title": "建议保留功能冻结说明",
+      "detail": "在 README 中说明当前版本聚焦本地刷题，WebDAV、AI、云端同步均为未来计划。"
+    },
+    {
+      "title": "建议发布 v0.1.0",
+      "detail": "当前功能适合作为 v0.1.0 本地刷题版，后续功能可进入 v0.2.0 或 roadmap。"
+    }
+  ]
+}
